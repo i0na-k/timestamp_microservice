@@ -11,16 +11,10 @@ const app = express()
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'))
 
-app.use("/:time", (req,res) =>{
-  var query = req.params.query;
-  console.log(req.body);
-  res.end(query);
-})
-
-// http://expressjs.com/en/starter/basic-routing.html
-app.get("/", (req, res) => {
-  var query = req.params.query;
-  console.log('test');
+app.use("/", (req,res) =>{
+  var query = req.url;
+  var string = query.replace('').join();
+  console.log(JSON.stringify(string));
   res.end(query);
 })
 
@@ -39,6 +33,11 @@ app.get("/dreams", (request, response) => {
 app.post("/dreams", (request, response) => {
   dreams.push(request.query.dream)
   response.sendStatus(200)
+})
+
+// listen for requests :)
+const listener = app.listen(process.env.PORT, () => {
+  console.log(`Your app is listening on port ${listener.address().port}`)
 })
 
 app.listen(3010);
