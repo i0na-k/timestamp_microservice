@@ -12,16 +12,29 @@ const app = express()
 app.use(express.static('public'))
 
 app.use("/", (req,res) =>{
+  var obj = {};
   var query = req.url;
-  query = query.replace(/\//g, "");
+  var date = new Date();
+  
+  // clean the str to contain no whitespace chars and slashes
+  query = query.replace(/\W+/g, "");
+  
   console.log(query);
   var num = parseInt(query);
   console.log(num);
+  
+  // if query can be converted to num its unix, if not its natural
   if (isNaN(num)){
       console.log('Probably natural date');
+    var naturalTime = new Date(query);
+    var unixTime = new Date();
+    obj = {natural: naturalTime, unix: unixTime};
+    res.send(obj);
+      
   }
   else { 
     console.log('Convert to unix');
+    console.log(new Date(query));
   }
   
   res.end(query);
