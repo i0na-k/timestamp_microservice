@@ -13,8 +13,11 @@ app.use(express.static('public'))
 
 app.use("/", (req,res) =>{
   var query = req.url;
-  console.log(str);
-  if (query === NaN){
+  query = query.replace(/\//g, "");
+  console.log(query);
+  var num = parseInt(query);
+  console.log(num);
+  if (isNaN(num)){
       console.log('Probably natural date');
   }
   else { 
