@@ -11,9 +11,17 @@ const app = express()
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'))
 
+app.use("/:time", (req,res) =>{
+  var query = req.params.query;
+  console.log(req.body);
+  res.end(query);
+})
+
 // http://expressjs.com/en/starter/basic-routing.html
-app.get("/", (request, response) => {
-  response.sendFile(__dirname + '/views/index.html')
+app.get("/", (req, res) => {
+  var query = req.params.query;
+  console.log('test');
+  res.end(query);
 })
 
 // Simple in-memory store
@@ -37,3 +45,6 @@ app.post("/dreams", (request, response) => {
 const listener = app.listen(process.env.PORT, () => {
   console.log(`Your app is listening on port ${listener.address().port}`)
 })
+
+app.listen(port);
+
