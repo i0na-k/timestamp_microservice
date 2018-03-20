@@ -12,16 +12,15 @@ const app = express()
 app.use(express.static('public'))
 
 app.use("/", (req,res) =>{
-  var query = JSON.stringify(req.url);
-  
-  if (query.includes(/^[a-z]+$/i)){
-      console.log('Probably unix date');
+  var query = req.url;
+  console.log(str);
+  if (query === NaN){
+      console.log('Probably natural date');
   }
   else { 
-    console.log('Convert to natural');
+    console.log('Convert to unix');
   }
-  var string = query.replace(/\d+% ?/g, "");
-  console.log(JSON.stringify(string));
+  
   res.end(query);
 })
 
