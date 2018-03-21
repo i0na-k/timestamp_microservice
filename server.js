@@ -23,9 +23,17 @@ app.use("/", (req,res) =>{
   var num = parseInt(query);
   console.log(num);
   
+  var checkDate = Date.parse(query);
+  if (isNaN(checkDate)){
+    obj = {natural:null, unix: null};
+    res.send(JSON.stringify(obj));
+    console.log('null sent back');
+    return;
+  }
+  
   // if query can be converted to num its unix, if not its natural
   if (isNaN(num)){
-      console.log('Probably natural date');
+    console.log('Probably natural date');
     var naturalTime = new Date(query);
     var unixTime = new Date();
     obj = {natural: naturalTime, unix: unixTime};
@@ -37,7 +45,7 @@ app.use("/", (req,res) =>{
     console.log(new Date(query));
   }
   
-  res.end(query);
+
 })
 
 
