@@ -12,37 +12,43 @@ const app = express()
 app.use(express.static('public'))
 
 app.use("/", (req,res) =>{
+  var obj = {};
   var query = req.url;
-  query = query.replace(/\//g, "");
+  var date = new Date();
+  
+  query = decodeURI(query);
+  query = query.replace('/',"");
   console.log(query);
-  var num = parseInt(query);
-  console.log(num);
-  if (isNaN(num)){
-      console.log('Probably natural date');
-  }
-  else { 
-    console.log('Convert to unix');
+  
+  var checkDate = Date.parse(query);
+  var _date = new Date(checkDate);
+  var naturalTime = new Date(query);
+  
+  if (isNaN(checkDate)){
+    obj = {natural:null, unix: null};
+    res.send(JSON.stringify(obj));
+    console.log('Null sent back');
+    return;
   }
   
-  res.end(query);
+  // if query can be converted to num its unix, if not its natural
+  else if (isNaN(query)){
+    console.log('Natural date');
+    var unixTime = (_date.getTime()/1000);
+    
+    obj = {natural: query, unix: unixTime};
+    res.send(JSON.stringify(obj));
+      
+  }
+  else { 
+    console.log('Unix');
+    obj = {natural: naturalTime, unix: unixTime};
+    res.send(JSON.stringify(obj));
+  }
+  
+
 })
 
-// Simple in-memory store
-const dreams = [
-  "Find and count some sheep",
-  "Climb a really tall mountain",
-  "Wash the dishes"
-]
-
-app.get("/dreams", (request, response) => {
-  response.send(dreams)
-})
-
-// could also use the POST body instead of query string: http://expressjs.com/en/api.html#req.body
-app.post("/dreams", (request, response) => {
-  dreams.push(request.query.dream)
-  response.sendStatus(200)
-})
 
 // listen for requests :)
 const listener = app.listen(process.env.PORT, () => {
