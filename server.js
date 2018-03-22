@@ -23,7 +23,7 @@ app.use("/", (req,res) =>{
   
   
   var checkDate = Date.parse(query);
-  var queryToInt = Number(query);
+  var queryToInt = Math.round(query);
   var _unixDate = new Date(queryToInt);
   var _naturalDate = new Date(query);
   
@@ -42,7 +42,7 @@ app.use("/", (req,res) =>{
   // if query can be converted to num its unix, if not its natural
   else if (isNaN(query)){
     console.log('Natural date');
-    var unixTime = (_naturalDate.getTime()/1000);
+    var unixTime = Math.round((_naturalDate.getTime()/1000));
     
     obj = {natural: query, unix: unixTime};
     res.send(JSON.stringify(obj));
@@ -50,10 +50,8 @@ app.use("/", (req,res) =>{
   }
   else { 
     console.log('Unix');
-    var unixTime = (_unixDate.getTime()/1000);
-    console.log(';;;;', unixTime);
-    var naturalTime = moment().format('MMMM Do YYYY');
-    obj = {natural: naturalTime, unix: unixTime};
+    var naturalTime = moment.unix(query).format('MMMM Do YYYY');
+    obj = {natural: naturalTime, unix: query};
     res.send(JSON.stringify(obj));
   }
   
