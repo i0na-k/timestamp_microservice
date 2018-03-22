@@ -20,11 +20,11 @@ app.use("/", (req,res) =>{
   query = query.replace('/',"");
   console.log(query);
   
-  
-  var unixTime = new Date(query * 1000);
+  var checkDate = Date.parse(query);
+  var _date = new Date(checkDate);
   var naturalTime = new Date(query);
   
-  if ((isNaN(naturalTime)) && (isNaN(unixTime))){
+  if (isNaN(checkDate)){
     obj = {natural:null, unix: null};
     res.send(JSON.stringify(obj));
     console.log('Null sent back');
@@ -34,7 +34,10 @@ app.use("/", (req,res) =>{
   // if query can be converted to num its unix, if not its natural
   else if (isNaN(query)){
     console.log('Probably natural date');
-    obj = {natural: naturalTime, unix: unixTime};
+    var unixTime = (_date.getTime()/1000);
+    console.log('****', _date.getTime()/1000);
+    
+    obj = {natural: query, unix: unixTime};
     res.send(obj);
       
   }
