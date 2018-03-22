@@ -1,5 +1,6 @@
 // server.js
 // where your node app starts
+var moment = require('moment');
 
 // init project
 const express = require('express')
@@ -18,13 +19,15 @@ app.use("/", (req,res) =>{
   
   query = decodeURI(query);
   query = query.replace('/',"");
-  console.log(query);
+  console.log('--->',query);
+  
   
   var checkDate = Date.parse(query);
-  var _date = new Date(checkDate);
-  var naturalTime = new Date(query);
+  var queryToInt = Number(query);
+  var _unixDate = new Date(queryToInt);
+  var _naturalDate = new Date(query);
   
-  if (isNaN(checkDate)){
+  if (isNaN(checkDate) && isNaN(query)){
     obj = {natural:null, unix: null};
     res.send(JSON.stringify(obj));
     console.log('Null sent back');
@@ -34,7 +37,7 @@ app.use("/", (req,res) =>{
   // if query can be converted to num its unix, if not its natural
   else if (isNaN(query)){
     console.log('Natural date');
-    var unixTime = (_date.getTime()/1000);
+    var unixTime = (_naturalDate.getTime()/1000);
     
     obj = {natural: query, unix: unixTime};
     res.send(JSON.stringify(obj));
@@ -42,6 +45,9 @@ app.use("/", (req,res) =>{
   }
   else { 
     console.log('Unix');
+    var unixTime = (_unixDate.getTime()/1000);
+    console.log(';;;;', unixTime);
+    var naturalTime = moment().format('MMMM Do YYYY');
     obj = {natural: naturalTime, unix: unixTime};
     res.send(JSON.stringify(obj));
   }
