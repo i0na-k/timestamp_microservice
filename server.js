@@ -16,33 +16,32 @@ app.use("/", (req,res) =>{
   var query = req.url;
   var date = new Date();
   
-  // clean the str to contain no whitespace chars and slashes
-  query = query.replace(/\W+/g, "");
-  
+  query = decodeURI(query);
+  query = query.replace('/',"");
   console.log(query);
-  var num = parseInt(query);
-  console.log(num);
   
-  var checkDate = Date.parse(query);
-  if (isNaN(checkDate)){
+  
+  var unixTime = new Date(query * 1000);
+  var naturalTime = new Date(query);
+  
+  if ((isNaN(naturalTime)) && (isNaN(unixTime))){
     obj = {natural:null, unix: null};
     res.send(JSON.stringify(obj));
-    console.log('null sent back');
+    console.log('Null sent back');
     return;
   }
   
   // if query can be converted to num its unix, if not its natural
-  if (isNaN(num)){
+  else if (isNaN(query)){
     console.log('Probably natural date');
-    var naturalTime = new Date(query);
-    var unixTime = new Date();
     obj = {natural: naturalTime, unix: unixTime};
     res.send(obj);
       
   }
   else { 
     console.log('Convert to unix');
-    console.log(new Date(query));
+    obj = {natural: naturalTime, unix: unixTime};
+    res.send(JSON.stringify(obj));
   }
   
 
