@@ -27,7 +27,12 @@ app.use("/", (req,res) =>{
   var _unixDate = new Date(queryToInt);
   var _naturalDate = new Date(query);
   
-  if (isNaN(checkDate) && isNaN(query)){
+  function isInt(value) {
+  var x = parseFloat(value);
+  return !isNaN(value) && (x | 0) === x;
+  }
+  
+  if (isNaN(checkDate) && !isInt(query)){
     obj = {natural:null, unix: null};
     res.send(JSON.stringify(obj));
     console.log('Null sent back');
