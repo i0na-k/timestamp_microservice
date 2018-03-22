@@ -33,16 +33,15 @@ app.use("/", (req,res) =>{
   
   // if query can be converted to num its unix, if not its natural
   else if (isNaN(query)){
-    console.log('Probably natural date');
+    console.log('Natural date');
     var unixTime = (_date.getTime()/1000);
-    console.log('****', _date.getTime()/1000);
     
     obj = {natural: query, unix: unixTime};
-    res.send(obj);
+    res.send(JSON.stringify(obj));
       
   }
   else { 
-    console.log('Convert to unix');
+    console.log('Unix');
     obj = {natural: naturalTime, unix: unixTime};
     res.send(JSON.stringify(obj));
   }
