@@ -24,6 +24,7 @@
     "express"
   ],
   "devDependencies": {
+    "jade": "^1.11.0",
     "moment": "^2.21.0"
   }
 }

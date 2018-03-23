@@ -10,13 +10,13 @@ const app = express()
 // but feel free to use whatever libs or frameworks you'd like through `package.json`.
 
 // http://expressjs.com/en/starter/static-files.html
-app.use(express.static('public'))
-
+app.use(express.static('public'));
+app.use(express.static('views'));
 app.use("/", (req,res) =>{
   var obj = {};
   var query = req.url;
   var date = new Date();
-  
+  var html = '<body style="background-color:purple";>'+'<h1 style="color:DarkTurquoise";>';
   query = decodeURI(query);
   query = query.replace('/',"");
   console.log('--->',query);
@@ -34,7 +34,9 @@ app.use("/", (req,res) =>{
   
   if (isNaN(checkDate) && !isInt(query)){
     obj = {natural:null, unix: null};
-    res.send(JSON.stringify(obj));
+    res.send( html + JSON.stringify(obj) + '</h1>');
+    // res.send(JSON.stringify(obj));
+    
     console.log('Null sent back');
     return;
   }
@@ -45,14 +47,14 @@ app.use("/", (req,res) =>{
     var unixTime = Math.round((_naturalDate.getTime()/1000));
     
     obj = {natural: query, unix: unixTime};
-    res.send(JSON.stringify(obj));
+    res.send(html + JSON.stringify(obj) + '</h1>');
       
   }
   else { 
     console.log('Unix');
     var naturalTime = moment.unix(query).format('MMMM Do YYYY');
     obj = {natural: naturalTime, unix: query};
-    res.send(JSON.stringify(obj));
+    res.send(html + JSON.stringify(obj) + '</h1>');
   }
   
 
